@@ -1,13 +1,375 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>My Google AI Studio App</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
-</html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Stop Scrolling. Start Creating.</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
 
+  <style>
+    :root {
+      --bg: #f9f8f4;
+      --fg: #0a0a0a;
+      --muted: #6b6b6b;
+      --accent: #8b1d1d;
+      --line: rgba(0, 0, 0, 0.08);
+      --card: #ffffff;
+    }
+
+    * { box-sizing: border-box; }
+    body { 
+      margin: 0; 
+      background: var(--bg); 
+      color: var(--fg); 
+      font-family: 'Inter', sans-serif; 
+      line-height: 1.5; 
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+
+    /* NAVIGATION */
+    nav {
+      padding: 40px 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .back-link {
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      color: var(--fg);
+      text-decoration: none;
+      border-bottom: 1px solid var(--fg);
+      padding-bottom: 2px;
+      transition: opacity 0.2s;
+    }
+    .back-link:hover { opacity: 0.5; }
+
+    /* HERO */
+    header { 
+      padding: 80px 0 120px; 
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 80px;
+    }
+    
+    .kicker {
+      font-size: 11px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 32px;
+      display: block;
+    }
+
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(50px, 12vw, 130px);
+      line-height: 0.85;
+      margin: 0;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+    }
+
+    h1 em { 
+      font-style: italic; 
+      font-weight: 400; 
+      display: block;
+      margin-left: 10vw;
+    }
+
+    /* GRID */
+    .layout-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 100px;
+      align-items: start;
+    }
+
+    /* LEFT: CONTENT */
+    .content-info h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 38px;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .content-intro {
+      font-size: 16px;
+      color: var(--muted);
+      margin-bottom: 60px;
+      max-width: 42ch;
+      line-height: 1.7;
+    }
+
+    .feature-item {
+      margin-bottom: 56px;
+      padding-bottom: 56px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .feature-item:last-child {
+      border-bottom: none;
+    }
+
+    .feature-num {
+      font-size: 12px;
+      font-weight: 700;
+      display: block;
+      margin-bottom: 12px;
+      color: var(--fg);
+    }
+
+    .feature-item h3 {
+      font-size: 18px;
+      font-weight: 700;
+      margin: 0 0 12px 0;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .feature-item p {
+      font-size: 15px;
+      color: var(--muted);
+      max-width: 40ch;
+      line-height: 1.7;
+      margin: 0;
+    }
+
+    /* RIGHT: GATE */
+    .gate-box {
+      background: var(--card);
+      padding: 60px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      position: sticky;
+      top: 60px;
+    }
+
+    .gate-box h4 {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.25em;
+      margin: 0 0 12px 0;
+      color: var(--muted);
+    }
+
+    .gate-box .gate-tagline {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      line-height: 1.3;
+      margin-bottom: 12px;
+    }
+
+    .gate-box .gate-desc {
+      font-size: 14px;
+      color: var(--muted);
+      margin-bottom: 40px;
+      line-height: 1.65;
+    }
+
+    .gate-box .what-you-get {
+      list-style: none;
+      padding: 0;
+      margin: 0 0 40px 0;
+      border-top: 1px solid var(--line);
+      padding-top: 28px;
+    }
+
+    .gate-box .what-you-get li {
+      font-size: 13px;
+      color: var(--muted);
+      padding: 8px 0;
+      border-bottom: 1px solid var(--line);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .gate-box .what-you-get li::before {
+      content: '→';
+      color: var(--accent);
+      font-size: 12px;
+      flex-shrink: 0;
+    }
+
+    input[type="email"] {
+      width: 100%;
+      padding: 20px 0;
+      background: transparent;
+      border: none;
+      border-bottom: 2px solid var(--fg);
+      font-family: inherit;
+      font-size: 17px;
+      margin-bottom: 20px;
+      outline: none;
+      color: var(--fg);
+      transition: border-color 0.2s;
+    }
+
+    input[type="email"]::placeholder { color: var(--muted); }
+    input[type="email"]:focus { border-color: var(--accent); }
+
+    .privacy-note {
+      font-size: 11px;
+      color: var(--muted);
+      margin-bottom: 32px;
+      letter-spacing: 0.03em;
+    }
+
+    .main-btn {
+      width: 100%;
+      padding: 22px;
+      background: var(--fg);
+      color: var(--bg);
+      border: none;
+      border-radius: 8px;
+      font-family: inherit;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-size: 11px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .main-btn:hover { background: #555; }
+
+    #download-area { display: none; }
+
+    .download-btn {
+      display: block;
+      text-align: center;
+      text-decoration: none;
+      width: 100%;
+      padding: 22px;
+      background: var(--accent);
+      color: white;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.2em;
+      font-size: 11px;
+      transition: opacity 0.2s;
+      margin-top: 8px;
+    }
+    .download-btn:hover { opacity: 0.85; }
+
+    /* QUOTE PULLOUT */
+    .pull-quote {
+      margin: 80px 0 0;
+      padding: 60px 0;
+      border-top: 1px solid var(--line);
+    }
+
+    .pull-quote blockquote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(20px, 3vw, 30px);
+      font-style: italic;
+      line-height: 1.45;
+      margin: 0 0 20px 0;
+      max-width: 60ch;
+    }
+
+    .pull-quote cite {
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: var(--muted);
+      font-style: normal;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .wrap { padding: 0 24px; }
+      .layout-grid { grid-template-columns: 1fr; gap: 60px; }
+      h1 em { margin-left: 0; }
+      .gate-box { padding: 40px 28px; position: static; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="wrap">
+    <nav>
+      <a href="https://tovapersson.github.io/" class="back-link">← Back to Portfolio</a>
+      <div style="font-size: 11px; letter-spacing: 0.1em; color: var(--muted);">©2026</div>
+    </nav>
+
+    <header>
+      <span class="kicker">Free Guide</span>
+      <h1>Stop Scrolling. <em>Start Creating.</em></h1>
+    </header>
+
+    <div class="layout-grid">
+      <div class="content-info">
+        <h2>How to automate social listening and create better content — faster.</h2>
+        <p class="content-intro">Every day, agencies spend hours manually scrolling through TikTok, Instagram, and Reddit looking for that one golden insight. There is a smarter way. This guide shows you how.</p>
+
+        <div class="feature-item">
+          <span class="feature-num">01</span>
+          <h3>The Scrolling Problem</h3>
+          <p>Agencies waste hours daily on manual trend monitoring. Your most valuable resource is not time — it is creativity. Learn why this broken process is costing you more than you think.</p>
+        </div>
+
+        <div class="feature-item">
+          <span class="feature-num">02</span>
+          <h3>The Automated Pipeline</h3>
+          <p>A three-layer system for collecting data, analyzing it with AI, and turning insights into content ideas — without anyone having to scroll. From scraping to script drafts.</p>
+        </div>
+
+        <div class="feature-item">
+          <span class="feature-num">03</span>
+          <h3>Your Agency's Blueprint</h3>
+          <p>Actionable steps to build a tailored social listening workflow that actually scales. React to trends in hours, base decisions on data, and free up time for what only humans can do.</p>
+        </div>
+
+        <div class="pull-quote">
+          <blockquote>"The heavy lifting belongs to the machine. Creativity belongs to you."</blockquote>
+          <cite>From the guide</cite>
+        </div>
+      </div>
+
+      <div class="gate-box">
+        <div id="gate-area">
+          <h4>Free Download</h4>
+          <p class="gate-tagline">Get instant access to the full guide.</p>
+          <p class="gate-desc">A practical playbook for agencies who want to work smarter — not just harder.</p>
+
+          <input type="email" id="email-field" placeholder="Email Address" required />
+          <button class="main-btn" onclick="handleAccess()">Get the Free Guide</button>
+        </div>
+
+        <div id="download-area">
+          <h4>You're in</h4>
+          <p class="gate-tagline">The guide is ready for you.</p>
+          <p class="gate-desc">Download the PDF below and start building your agency's content pipeline today.</p>
+          <a href="Sluta_scrolla__Bo_rja_automatisera__Hur_byra_er_kan_anva_nda_AI_fo_r_att_automatisera_social_listening_och_skapa_ba_ttre_content___snabbare___1_.pdf" class="download-btn" download>Download PDF →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function handleAccess() {
+      const email = document.getElementById('email-field').value;
+      if (email.includes("@") && email.includes(".")) {
+        document.getElementById('gate-area').style.display = 'none';
+        document.getElementById('download-area').style.display = 'block';
+      } else {
+        alert("Please enter a valid email address.");
+      }
+    }
+
+    document.getElementById('email-field').addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') handleAccess();
+    });
+  </script>
+
+</body>
+</html>
