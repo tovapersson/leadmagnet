@@ -355,7 +355,7 @@
   </div>
 
   <script>
-    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbziUjPQi4MM7voj-j_OlHazz6wuc3fiFDWTGUzCo6QTSfvSCn09u1TU1Zu1Fy9GlfcC/exec';
+    const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwjPXsHBDjeh7MkehmOd7OJIzxsvO_4BIC0ufFEm1OHZX9JoRhlRZsbo09gOWkGQpa3/exec';
 
     function handleAccess() {
       const email = document.getElementById('email-field').value;
@@ -363,10 +363,7 @@
         document.getElementById('gate-area').style.display = 'none';
         document.getElementById('download-area').style.display = 'block';
 
-        fetch(SCRIPT_URL, {
-          method: 'POST',
-          body: new URLSearchParams({ email: email })
-        });
+        fetch(SCRIPT_URL + '?email=' + encodeURIComponent(email));
       } else {
         alert("Please enter a valid email address.");
       }
